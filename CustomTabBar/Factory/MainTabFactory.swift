@@ -54,7 +54,7 @@ struct MainTabFactory {
         return TabContainerController(
             routes: routes,
             initialSelectedIndex: 0,
-            tabBarStyle: .frostedGlass,
+            tabBarStyle: .plain,
             selectionPolicy: { request in
                 return .allow
             },
