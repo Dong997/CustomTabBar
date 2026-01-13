@@ -319,7 +319,12 @@ class TabContainerController: UIViewController, TabBarControlDelegate {
         }
         
         let direction: UIPageViewController.NavigationDirection = toIndex >= fromIndex ? .forward : .reverse
-        let shouldAnimateTransition = animated && pageViewController.view.window != nil && currentVisibleViewController != nil
+        
+        // If a transition is already in progress, we must disable animation for the new transition
+        // to avoid UIPageViewController crashing with "Don't know about flushed view".
+        // This effectively cancels the previous transition and snaps to the new one.
+        let isTransitionInProgress = isSettingPageViewController
+        let shouldAnimateTransition = animated && pageViewController.view.window != nil && currentVisibleViewController != nil && !isTransitionInProgress
         
         isSettingPageViewController = true
         selectedRouteViewController = nextViewController
